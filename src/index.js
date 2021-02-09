@@ -6,7 +6,10 @@ const ramenRating = document.getElementById("ramen-rating")
 function fetchRamens(){
     fetch(ramenUrl)
     .then(response => response.json())
-    .then(data => data.forEach(ramen=> renderRamen(ramen)))
+    .then(data => {
+      data.forEach(ramen=> renderRamen(ramen))
+      //refactor showRamen( ramen ) to show a ramen and not a ramenClick.target
+    })
 }
 
 function renderRamen(ramen){
@@ -22,7 +25,7 @@ function renderRamen(ramen){
 }
 
 function showRamen(ramenClick){
-  if(ramenClick.target.tagName === "IMG"){
+  if (ramenClick.target.tagName === "IMG"){
     ramenDetail.querySelector('img').src = ramenClick.target.src
     ramenDetail.querySelector('h2').innerText = ramenClick.target.dataset.name
     ramenDetail.querySelector('h3').innerText = ramenClick.target.dataset.restaurant
@@ -40,7 +43,7 @@ function updateRamen(formSubmission){
     comment: formSubmission.target.elements.comment.value,
     rating:formSubmission.target.elements.rating.value
   }
-  if(ramenDetail.dataset.id){
+  if (ramenDetail.dataset.id){
     fetch(`${ramenUrl}/${ramenToUpdateId}`,{
     method:"PATCH",
     headers:{
