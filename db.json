@@ -44,9 +44,25 @@
       "name": "Shio Ramen",
       "restaurant": "Santouka",
       "image": "https://s3-media0.fl.yelpcdn.com/bphoto/yS2yqvMmaIGLstqvuvWLZQ/o.jpg",
-      "rating": "10",
+      "rating": "7",
       "comment": "I love the food court here!",
       "id": 6
+    },
+    {
+      "name": "Curry Chashu Ramen",
+      "restaurant": "Blackbeard Ramen",
+      "image": "https://s3-media0.fl.yelpcdn.com/bphoto/QFsDXq-moeKF4dX38xu3mg/o.jpg",
+      "rating": "8",
+      "comment": "Very spicy!",
+      "id": 7
+    },
+    {
+      "name": "Instant Ramen",
+      "restaurant": "My couch",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/81z%2B9btX7tL._SL1500_.jpg",
+      "rating": "-10",
+      "comment": "Disgusting",
+      "id": 8
     }
   ]
 }

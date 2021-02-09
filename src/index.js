@@ -1,8 +1,9 @@
 const ramenUrl = 'http://localhost:3000/ramens';
 const ramenMenu = document.getElementById( "ramen-menu" );
 const ramenDetail = document.getElementById( "ramen-detail" );
-const ramenRating = document.getElementById( "ramen-rating" );
-const newRamen = document.getElementById( "new-ramen" );
+const ratingForm = document.getElementById( "ramen-rating" );
+const deleteForm = document.getElementById( "delete-ramen" );
+const newForm = document.getElementById( "new-ramen" );
 
 function fetchRamens() {
     fetch( ramenUrl )
@@ -31,8 +32,9 @@ function showRamen( ramenId ) {
   ramenDetail.querySelector( 'h2' ).innerText = ramenToShow.dataset.name;
   ramenDetail.querySelector( 'h3' ).innerText = ramenToShow.dataset.restaurant;
   ramenDetail.dataset.id = ramenToShow.dataset.id;
-  ramenRating.elements.rating.value = ramenToShow.dataset.rating;
-  ramenRating.elements.comment.value = ramenToShow.dataset.comment;
+  ratingForm.elements.rating.value = ramenToShow.dataset.rating;
+  ratingForm.elements.comment.value = ramenToShow.dataset.comment;
+  deleteForm.dataset.id = ramenToShow.dataset.id;
 }
 
 function updateRamen( formSubmission ) {
@@ -46,9 +48,9 @@ function updateRamen( formSubmission ) {
   if ( ramenDetail.dataset.id ) {
     fetch( `${ramenUrl}/${ramenToUpdateId}`, { method: "PATCH", headers: { 'Content-Type':'application/json' }, body: JSON.stringify( ramenUpdate ) } )
       .then( response => response.json() )
-      .then( ramenData => {
-        document.querySelector( `img[data-id="${ramenToUpdateId}"]` ).dataset.rating = ramenData.rating;
-        document.querySelector( `img[data-id="${ramenToUpdateId}"]` ).dataset.comment = ramenData.comment;
+      .then( updatedRamenData => {
+        document.querySelector( `img[data-id="${ramenToUpdateId}"]` ).dataset.rating = updatedRamenData.rating;
+        document.querySelector( `img[data-id="${ramenToUpdateId}"]` ).dataset.comment = updatedRamenData.comment;
       } );
   }
 }
@@ -70,9 +72,21 @@ function createRamen( formSubmission ) {
   } );
 }
 
+function deleteRamen( formSubmission ) {
+  formSubmission.preventDefault();
+  const ramenToDeleteId = formSubmission.target.dataset.id;
+  fetch( `${ramenUrl}/${ramenToDeleteId}`, { method: "DELETE" } )
+  .then( response => response.json() )
+  .then( () => {
+    document.querySelector( `img[data-id="${ ramenToDeleteId }"]` ).remove();
+    ramenDetail.innerHTML = `<div id="ramen-detail"><img class="detail-image" src="./assets/image-placeholder.jpg" alt="Insert Name Here" /><h2 class="name">Insert Name Here</h2><h3 class="restaurant">Insert Restaurant Here</h3></div>`
+  } );
+}
+
 document.addEventListener( 'DOMContentLoaded',function() {
   fetchRamens();
   ramenMenu.addEventListener( 'click', ramenClick => { if ( ramenClick.target.tagName === "IMG" ) { showRamen( ramenClick.target.dataset.id ) } } );
-  ramenRating.addEventListener( 'submit', updateRamen );
-  newRamen.addEventListener( 'submit', createRamen );
+  ratingForm.addEventListener( 'submit', updateRamen );
+  deleteForm.addEventListener( 'submit', deleteRamen );
+  newForm.addEventListener( 'submit', createRamen );
 } )
